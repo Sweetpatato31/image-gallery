@@ -26,10 +26,10 @@
     }
 
     .cover-container {
-      position: relative;
       width: 100%;
       height: 100vh;
       overflow: hidden;
+      transition: opacity 1s ease;
     }
 
     .cover-container img {
@@ -37,9 +37,14 @@
       height: 100%;
       object-fit: cover;
       cursor: pointer;
-      transition: opacity 1s ease;
     }
 
+    .cover-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+    }
+    
     .gallery {
       opacity: 0;
       visibility: hidden;
@@ -249,11 +254,11 @@
 
   <script>
     function fadeToGallery() {
-      const coverImage = document.getElementById("coverImage");
+      const coverContainer = document.getElementById("coverContainer");
       const gallery = document.getElementById("gallery");
 
-      coverImage.style.opacity = "0";
-
+      coverContainer.classList.add("cover-hidden");
+      
       setTimeout(() => {
         document.getElementById("coverContainer").style.display = "none";
         gallery.classList.add("show");
