@@ -26,7 +26,7 @@
     }
 
     .gallery-container {
-      display: none;
+      display: block;
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.5s ease, visibility 0.5s ease;
@@ -52,8 +52,15 @@
       width: 100%;
       height: auto;
       display: block;
-      border: none;
+      border: 5px solid #fff;
     }
+
+    @media (max-width: 1200px) {
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
 
     @media (max-width: 900px) {
       .gallery-grid {
