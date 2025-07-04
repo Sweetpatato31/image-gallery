@@ -45,7 +45,7 @@
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.6s ease, visibility 0.6s ease;
-      padding: 1rem;
+      padding: 0;
       max-width: 1200px;
       margin: 0 auto 50px;
     }
@@ -164,19 +164,6 @@
       }
     }
 
-    .modal {
-      position: fixed;
-      z-index: 999;
-      width: 60%;
-      max-width: 800px;
-      top: 50%;
-      left: 50%;
-      transform: translate3d(-50%, -50%, 0);
-      background: black;
-      padding: 10px;
-      display: none;
-    }
-
     .modal img {
       width: 100%;
       border: 5px solid #fff;
@@ -184,50 +171,53 @@
 
     .modal-overlay {
       position: fixed;
-      z-index: 998;
+      z-index: 1;
       height: 100%;
       width: 100%;
       background-color: rgba(0, 0, 0, 0.5);
       top: 0;
       left: 0;
-      display: none;
     }
 
-    .modal-close,
-    .modal-next,
-    .modal-prev {
+    .modal-body a {
       position: absolute;
+      display: inline;
       color: #222;
       text-decoration: none;
+      line-height: 36px;
       font-size: 30px;
+      font-weight: lighter;
       background: #fff;
       border-radius: 5px;
       height: 40px;
       width: 40px;
-      line-height: 36px;
       text-align: center;
-      cursor: pointer;
     }
 
-    .modal-close {
+    .modal-body .modal-close {
+      right: 0;
       top: 0;
-      right: 0;
+      border-radius: 0 0 0 5px;
     }
 
-    .modal-prev,
-    .modal-next {
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 40px;
+    .modal-body .modal-next,
+    .modal-body .modal-prev {
+      right: 0;
+      top: calc(50% - 25px);
+      border-radius: 5px 0 0 5px;
       height: 50px;
+      line-height: 40px;
+      font-size: 60px;
     }
 
-    .modal-prev {
+    .modal-body .modal-prev {
       left: 0;
+      right: auto;
+      border-radius: 0 5px 5px 0;
     }
 
-    .modal-next {
-      right: 0;
+    .modal-body {
+      position: relative;
     }
   </style>
   
