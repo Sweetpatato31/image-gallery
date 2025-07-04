@@ -232,18 +232,7 @@
     title="Click to open gallery"
   />
 
-  <section class="gallery-container">
-    <h1>Lissabon</h1>
-    <div class="gallery-grid"></div>
-  </section>
-
-  <div class="modal-overlay"></div>
-  <div class="modal">
-    <a class="modal-close" title="Close">&times;</a>
-    <a class="modal-prev" title="Previous">&#8249;</a>
-    <a class="modal-next" title="Next">&#8250;</a>
-    <img src="" alt="Modal Image" />
-  </div>
+  <section class="gallery-container"><h1>Lissabon</h1></section>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
@@ -262,10 +251,9 @@
         requestAnimationFrame(() => {
           galleryContainer.classList.add('fade-in');
         });
-      }, 600);
+      }};
     });
 
-    // ⚛️ React Gallery Component
     class Gallery extends React.Component {
       constructor(props) {
         super(props);
