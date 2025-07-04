@@ -26,10 +26,13 @@
 
     #gallery-cover {
       cursor: pointer;
-      width: 100vw;
-      height: auto;
+      max-width: 800px;
+      width: 100%;
+      margin: 20px auto;
       display: block;
-      transition: opacity 0.5s ease;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
     }
 
     #gallery-cover.fade-out {
@@ -38,9 +41,20 @@
     }
 
     .gallery-container {
-      padding: 0.9375rem 0;
+      display: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto 50px;
     }
-    
+
+    .gallery-container.fade-in {
+      opacity: 1;
+      visibility: visible;
+    }
+
     .gallery-container h1 {  
       margin: 2rem 0;
       padding: 0.9375rem 0;
@@ -50,13 +64,7 @@
       font-size: 6.5vw;
       font-weight: lighter;
     }
-    
-    .gallery-container.fade-in {
-      display: block;
-      opacity: 1;
-      visibility: visible;
-    }
-    
+
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -84,7 +92,7 @@
       }
     }
 
-    .gallery-grid img {
+.gallery-grid img {
       width: 100%;
       border: 5px solid #fff;
     }
@@ -156,6 +164,19 @@
       }
     }
 
+    .modal {
+      position: fixed;
+      z-index: 999;
+      width: 60%;
+      max-width: 800px;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      background: black;
+      padding: 10px;
+      display: none;
+    }
+
     .modal img {
       width: 100%;
       border: 5px solid #fff;
@@ -163,53 +184,50 @@
 
     .modal-overlay {
       position: fixed;
-      z-index: 1;
+      z-index: 998;
       height: 100%;
       width: 100%;
       background-color: rgba(0, 0, 0, 0.5);
       top: 0;
       left: 0;
+      display: none;
     }
 
-    .modal-body a {
+    .modal-close,
+    .modal-next,
+    .modal-prev {
       position: absolute;
-      display: inline;
       color: #222;
       text-decoration: none;
-      line-height: 36px;
       font-size: 30px;
-      font-weight: lighter;
       background: #fff;
       border-radius: 5px;
       height: 40px;
       width: 40px;
+      line-height: 36px;
       text-align: center;
+      cursor: pointer;
     }
 
-    .modal-body .modal-close {
-      right: 0;
+    .modal-close {
       top: 0;
-      border-radius: 0 0 0 5px;
-    }
-
-    .modal-body .modal-next,
-    .modal-body .modal-prev {
       right: 0;
-      top: calc(50% - 25px);
-      border-radius: 5px 0 0 5px;
+    }
+
+    .modal-prev,
+    .modal-next {
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 40px;
       height: 50px;
-      line-height: 40px;
-      font-size: 60px;
     }
 
-    .modal-body .modal-prev {
+    .modal-prev {
       left: 0;
-      right: auto;
-      border-radius: 0 5px 5px 0;
     }
 
-    .modal-body {
-      position: relative;
+    .modal-next {
+      right: 0;
     }
   </style>
   
@@ -249,10 +267,15 @@
     cover.addEventListener('click', () => {
       cover.classList.add('fade-out');
       setTimeout(() => {
-        galleryContainer.classList.add('fade-in');
-      }, 500);
+        cover.style.display = 'none';
+        galleryContainer.style.display = 'block';
+        requestAnimationFrame(() => {
+          galleryContainer.classList.add('fade-in');
+        });
+      }, 600);
     });
-    
+
+    // ⚛️ React Gallery Component
     class Gallery extends React.Component {
       constructor(props) {
         super(props);
@@ -262,7 +285,7 @@
         this.findPrev = this.findPrev.bind(this);
         this.renderImageContent = this.renderImageContent.bind(this);
       }
-      
+
       renderImageContent(src, index) {
         return React.createElement(
           'div',
