@@ -2,27 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Travel Log Lissabon</title>
+  <title>My Full Width Gallery</title>
 
-   <style>
+  <style>
     body {
-      font-family: helvetica, Arial, sans-serif;
-      background: linear-gradient(to right, #333333, #0e0e0e);
       margin: 0;
-      padding: 0;
-      text-align: center;
+      font-family: sans-serif;
+      background: #111;
       color: white;
     }
 
     #gallery-cover {
       cursor: pointer;
-      max-width: 800px;
-      width: 100%;
-      margin: 20px auto;
+      width: 100vw;
+      height: auto;
       display: block;
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
+      transition: opacity 0.5s ease;
     }
 
     #gallery-cover.fade-out {
@@ -34,22 +29,22 @@
       display: none;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
       width: 100vw;
       margin: 0;
-      padding: 1rem;
-    }  
-
+      padding: 0;
+    }
 
     .gallery-container.fade-in {
+      display: block;
       opacity: 1;
       visibility: visible;
     }
-
+    
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px; 
+      gap: 0;
       width: 100%;
     }
 
@@ -57,142 +52,37 @@
       width: 100%;
       height: auto;
       display: block;
-      border: 5px solid #fff;
-      cursor: pointer;
+      border: none;
     }
 
-     @media (max-width: 900px) {
+    @media (max-width: 900px) {
       .gallery-grid {
-        grid-template-columns: repeat(2, 1fr); 
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
     @media (max-width: 600px) {
       .gallery-grid {
-        grid-template-columns: 1fr; 
+        grid-template-columns: 1fr;
       }
-    }
-
-    .gallery-grid div {
-      position: relative;
-    }
-
-    .gallery-grid div:before,
-    .gallery-grid div:after {
-      transition: 0.3s opacity ease;
-      opacity: 0;
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(34, 34, 34, 0.5);
-      pointer-events: none;
-    }
-
-    .gallery-grid div:after {
-      content: "↔";
-      font-size: 80px;
-      transform: translate3d(-50%, -50%, 0) rotate(-45deg);
-      color: #fff;
-      left: 50%;
-      top: 50%;
-    }
-
-    .gallery-grid div:hover:before,
-    .gallery-grid div:hover:after {
-      opacity: 1;
-    }
-
-    .modal {
-      position: fixed;
-      z-index: 999;
-      width: 60%;
-      max-width: 800px;
-      top: 50%;
-      left: 50%;
-      transform: translate3d(-50%, -50%, 0);
-      background: black;
-      padding: 10px;
-      display: none;
-    }
-
-    .modal img {
-      width: 100%;
-      border: 5px solid #fff;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      z-index: 998;
-      height: 100%;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      top: 0;
-      left: 0;
-      display: none;
-    }
-
-    .modal-close,
-    .modal-next,
-    .modal-prev {
-      position: absolute;
-      color: #222;
-      text-decoration: none;
-      font-size: 30px;
-      background: #fff;
-      border-radius: 5px;
-      height: 40px;
-      width: 40px;
-      line-height: 36px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .modal-close {
-      top: 0;
-      right: 0;
-    }
-
-    .modal-prev,
-    .modal-next {
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 40px;
-      height: 50px;
-    }
-
-    .modal-prev {
-      left: 0;
-    }
-
-    .modal-next {
-      right: 0;
     }
   </style>
 </head>
 
 <body>
 
-   <img
+  <img
     id="gallery-cover"
     src="Cover Lissabon.png"
-    alt="Gallery Cover"
+    alt="Click to open gallery"
     title="Click to open gallery"
   />
 
-    <section class="gallery-container">
-    <h1>Lissabon</h1>
+  <section class="gallery-container">
     <div class="gallery-grid"></div>
   </section>
 
-   <div class="modal-overlay"></div>
-  <div class="modal">
-    <a class="modal-close" title="Close">&times;</a>
-    <a class="modal-prev" title="Previous">&#8249;</a>
-    <a class="modal-next" title="Next">&#8250;</a>
-    <img src="" alt="Modal Image" />
-  </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
 
   <script>
@@ -201,85 +91,21 @@
     const cover = document.getElementById('gallery-cover');
     const galleryContainer = document.querySelector('.gallery-container');
 
-      cover.addEventListener('click', () => {
+    cover.addEventListener('click', () => {
       cover.classList.add('fade-out');
       setTimeout(() => {
-        cover.style.display = 'none';
-        galleryContainer.style.display = 'block';
-        requestAnimationFrame(() => {
-          galleryContainer.classList.add('fade-in');
-        });
-      }, 600);
+        galleryContainer.classList.add('fade-in');
+      }, 500);
     });
-
-       class Gallery extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = { currentIndex: null };
-        this.closeModal = this.closeModal.bind(this);
-        this.findNext = this.findNext.bind(this);
-        this.findPrev = this.findPrev.bind(this);
-        this.renderImageContent = this.renderImageContent.bind(this);
-      }
-
-      renderImageContent(src, index) {
-        return React.createElement(
-          'div',
-          { key: src, onClick: () => this.openModal(index) },
-          React.createElement('img', { src, alt: `Image ${index + 1}` })
-        );
-      }
-
-      openModal(index) {
-        this.setState({ currentIndex: index });
-        document.querySelector('.modal').style.display = 'block';
-        document.querySelector('.modal-overlay').style.display = 'block';
-      }
-
-      closeModal() {
-        this.setState({ currentIndex: null });
-        document.querySelector('.modal').style.display = 'none';
-        document.querySelector('.modal-overlay').style.display = 'none';
-      }
-
-      findPrev() {
-        this.setState((prevState) => ({
-          currentIndex: Math.max(0, prevState.currentIndex - 1)
-        }));
-      }
-
-      findNext() {
-        this.setState((prevState) => ({
-          currentIndex: Math.min(imgUrls.length - 1, prevState.currentIndex + 1)
-        }));
-      }
-
-      componentDidUpdate() {
-        const img = document.querySelector('.modal img');
-        if (this.state.currentIndex !== null) {
-          img.src = imgUrls[this.state.currentIndex];
-        }
-      }
-
-      componentDidMount() {
-        document.querySelector('.modal-close').addEventListener('click', this.closeModal);
-        document.querySelector('.modal-prev').addEventListener('click', this.findPrev);
-        document.querySelector('.modal-next').addEventListener('click', this.findNext);
-        document.querySelector('.modal-overlay').addEventListener('click', this.closeModal);
-
-        document.body.addEventListener('keydown', (e) => {
-          if (this.state.currentIndex === null) return;
-          if (e.key === 'Escape') this.closeModal();
-          if (e.key === 'ArrowLeft') this.findPrev();
-          if (e.key === 'ArrowRight') this.findNext();
-        });
-      }
-
+    
+    class Gallery extends React.Component {
       render() {
         return React.createElement(
           'div',
-          { className: 'gallery-grid' },
-          imgUrls.map(this.renderImageContent)
+          {},
+          imgUrls.map((src, i) =>
+            React.createElement('img', { key: i, src, alt: `Image ${i + 1}` })
+          )
         );
       }
     }
