@@ -198,6 +198,33 @@
 </head>
 
 <body>
+ <div id="coverOverlay" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    background-image: url('cover.png');
+    background-size: cover;
+    background-position: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 1s ease;
+    cursor: pointer;
+" onclick="fadeCover()">
+</div>
+
+<script>
+  function fadeCover() {
+    const cover = document.getElementById('coverOverlay');
+    cover.style.opacity = '0';
+    setTimeout(() => {
+      cover.style.display = 'none';
+    }, 1000); // Match this to the CSS transition duration
+  }
+</script>
+
   <!-- partial:index.partial.html -->
   <section class="gallery-container"></section>
   <!-- partial -->
@@ -254,7 +281,7 @@
       render() {
         return /*#__PURE__*/(
           React.createElement("div", { className: "gallery-container" }, /*#__PURE__*/
-            React.createElement("h1", null, "Gallery"), /*#__PURE__*/
+            React.createElement("h1", null, "Lissabon"), /*#__PURE__*/
             React.createElement("div", { className: "gallery-grid" },
               imgUrls.map(this.renderImageContent)), /*#__PURE__*/
 
