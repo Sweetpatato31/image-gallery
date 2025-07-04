@@ -37,12 +37,6 @@
       visibility: hidden;
     }
 
-    .gallery-container.fade-in {
-      display: block;
-      opacity: 1;
-      visibility: visible;
-    }
-    
     .gallery-container {
       padding: 0.9375rem 0;
     }
@@ -56,7 +50,13 @@
       font-size: 6.5vw;
       font-weight: lighter;
     }
-
+    
+    .gallery-container.fade-in {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+    
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -84,7 +84,7 @@
       }
     }
 
-.gallery-grid img {
+    .gallery-grid img {
       width: 100%;
       border: 5px solid #fff;
     }
@@ -262,104 +262,73 @@
         this.findPrev = this.findPrev.bind(this);
         this.renderImageContent = this.renderImageContent.bind(this);
       }
+      
       renderImageContent(src, index) {
-        return (
-          React.createElement("div", { onClick: e => this.openModal(e, index) }, 
-            React.createElement("img", { src: src, key: src })));
-
-
+        return React.createElement(
+          'div',
+          { key: src, onClick: () => this.openModal(index) },
+          React.createElement('img', { src, alt: `Image ${index + 1}` })
+        );
       }
-      openModal(e, index) {
+
+      openModal(index) {
         this.setState({ currentIndex: index });
+        document.querySelector('.modal').style.display = 'block';
+        document.querySelector('.modal-overlay').style.display = 'block';
       }
-      closeModal(e) {
-        if (e != undefined) {
-          e.preventDefault();
-        }
+
+      closeModal() {
         this.setState({ currentIndex: null });
+        document.querySelector('.modal').style.display = 'none';
+        document.querySelector('.modal-overlay').style.display = 'none';
       }
-      findPrev(e) {
-        if (e != undefined) {
-          e.preventDefault();
-        }
-        this.setState(prevState => ({
-          currentIndex: prevState.currentIndex - 1
+
+      findPrev() {
+        this.setState((prevState) => ({
+          currentIndex: Math.max(0, prevState.currentIndex - 1)
         }));
-
       }
-      findNext(e) {
-        if (e != undefined) {
-          e.preventDefault();
-        }
-        this.setState(prevState => ({
-          currentIndex: prevState.currentIndex + 1
+
+      findNext() {
+        this.setState((prevState) => ({
+          currentIndex: Math.min(imgUrls.length - 1, prevState.currentIndex + 1)
         }));
-
       }
-      render() {
-        return (
-          React.createElement("div", { className: "gallery-container" }, 
-            React.createElement("h1", null, "Gallery"), 
-            React.createElement("div", { className: "gallery-grid" },
-              imgUrls.map(this.renderImageContent)), 
-            React.createElement(GalleryModal, {
-              closeModal: this.closeModal,
-              findPrev: this.findPrev,
-              findNext: this.findNext,
-              hasPrev: this.state.currentIndex > 0,
-              hasNext: this.state.currentIndex + 1 < imgUrls.length,
-              src: imgUrls[this.state.currentIndex]
-            })));
 
-
-
+      componentDidUpdate() {
+        const img = document.querySelector('.modal img');
+        if (this.state.currentIndex !== null) {
+          img.src = imgUrls[this.state.currentIndex];
+        }
       }
-    }
 
-
-    class GalleryModal extends React.Component {
-      constructor() {
-        super();
-        this.handleKeyDown = this.handleKeyDown.bind(this);
-      }
       componentDidMount() {
-        document.body.addEventListener('keydown', this.handleKeyDown);
+        document.querySelector('.modal-close').addEventListener('click', this.closeModal);
+        document.querySelector('.modal-prev').addEventListener('click', this.findPrev);
+        document.querySelector('.modal-next').addEventListener('click', this.findNext);
+        document.querySelector('.modal-overlay').addEventListener('click', this.closeModal);
+
+        document.body.addEventListener('keydown', (e) => {
+          if (this.state.currentIndex === null) return;
+          if (e.key === 'Escape') this.closeModal();
+          if (e.key === 'ArrowLeft') this.findPrev();
+          if (e.key === 'ArrowRight') this.findNext();
+        });
       }
-      componentWillUnMount() {
-        document.body.removeEventListener('keydown', this.handleKeyDown);
-      }
-      handleKeyDown(e) {
-        if (e.keyCode === 27)
-          this.props.closeModal();
-        if (e.keyCode === 37 && this.props.hasPrev)
-          this.props.findPrev();
-        if (e.keyCode === 39 && this.props.hasNext)
-          this.props.findNext();
-      }
+
       render() {
-        const { closeModal, hasNext, hasPrev, findNext, findPrev, src } = this.props;
-        if (!src) {
-          console.log('whut');
-          return null;
-        }
-        return (
-          React.createElement("div", null, 
-            React.createElement("div", { className: "modal-overlay", onClick: closeModal }), 
-            React.createElement("div", { isOpen: !!src, className: "modal" }, 
-              React.createElement("div", { className: "modal-body" }, 
-                React.createElement("a", { href: "#", className: "modal-close", onClick: closeModal, onKeyDown: this.handleKeyDown }, "\xD7"),
-                hasPrev && React.createElement("a", { href: "#", className: "modal-prev", onClick: findPrev, onKeyDown: this.handleKeyDown }, "\u2039"),
-                hasNext && React.createElement("a", { href: "#", className: "modal-next", onClick: findNext, onKeyDown: this.handleKeyDown }, "\u203A"), /*#__PURE__*/
-                React.createElement("img", { src: src })))));
-
-
-
-
+        return React.createElement(
+          'div',
+          { className: 'gallery-grid' },
+          imgUrls.map(this.renderImageContent)
+        );
       }
     }
 
-
-    ReactDOM.render(React.createElement(Gallery, null), document.querySelector('.gallery-container'));
+    ReactDOM.render(
+      React.createElement(Gallery),
+      document.querySelector('.gallery-grid')
+    );
   </script>
 
 </body>
