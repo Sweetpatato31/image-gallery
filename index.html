@@ -231,6 +231,18 @@
     .modal-body {
       position: relative;
     }
+    .gallery:not(.show) .gallery-grid,
+    .gallery:not(.show) h1 {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1s ease, visibility 1s ease;
+    }
+    
+    .gallery.show .gallery-grid,
+    .gallery.show h1 {
+      opacity: 1;
+      visibility: visible;
+    }
   </style>
 
 </head>
